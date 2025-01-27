@@ -103,7 +103,7 @@
     ];
 
     // Create the alarm sound using Audio
-    const alarmSound = new Audio("button-4.wav");
+    const alarmSound = new Audio("retro.mp3");
     alarmSound.loop = true;  // Set the sound to loop indefinitely
 
     function startTimer(timerIndex, minutes) {
@@ -165,27 +165,30 @@
                 // Play the alarm sound in a loop
                 alarmSound.play();
 
-                // Directly show the time options prompt
+                // Directly show the time options prompt and keep the alarm going
                 handleSecondPrompt(timerIndex);
             }
         }, 1000);
     }
 
     function handleSecondPrompt(timerIndex) {
-        // Stop the alarm sound from looping when the prompt appears
-        alarmSound.pause();
-        alarmSound.currentTime = 0;
-
+        // Keep the alarm sound playing while waiting for user input
         let userChoice = prompt(`Choose time to add to ${timers[timerIndex].label}:\n1. 30 minutes\n2. 1 hour\n3. Exit (reset timer)`);
 
         if (userChoice === "1") {
             timers[timerIndex].time += 30 * 60; // Add 30 minutes
             startCountdown(timerIndex);
+            alarmSound.pause();  // Stop the alarm sound after action
+            alarmSound.currentTime = 0;  // Reset the sound
         } else if (userChoice === "2") {
             timers[timerIndex].time += 60 * 60; // Add 1 hour
             startCountdown(timerIndex);
+            alarmSound.pause();  // Stop the alarm sound after action
+            alarmSound.currentTime = 0;  // Reset the sound
         } else if (userChoice === "3") {
             resetTimer(timerIndex);
+            alarmSound.pause();  // Stop the alarm sound after reset
+            alarmSound.currentTime = 0;  // Reset the sound
         } else {
             alert("Invalid choice! Please choose '1', '2', or '3'.");
         }
