@@ -173,7 +173,7 @@
 
     function handleSecondPrompt(timerIndex) {
         // Keep the alarm sound playing while waiting for user input
-        let userChoice = prompt(`Choose time to add to ${timers[timerIndex].label}:\n1. 30 minutes\n2. 1 hour\ cancel to exit`);
+        let userChoice = prompt(`Choose time to add to ${timers[timerIndex].label}:\n1. 30 minutes\n2. 1 hour\n3. cancel to exit`);
 
         if (userChoice === "1") {
             timers[timerIndex].time += 30 * 60; // Add 30 minutes
