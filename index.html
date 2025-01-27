@@ -3,41 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Timer App</title>
+    <title>Multi Timer App with Stopwatch</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
             background-color: #f4f4f9;
+            padding: 20px 0;
         }
 
-        .container {
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 40px;
             text-align: center;
         }
 
         .timer {
-            margin: 20px;
-            padding: 20px;
             background-color: #fff;
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            display: inline-block;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        button {
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #5c6bc0;
-            color: white;
+        h2 {
+            font-size: 24px;
+            color: #444;
+            margin-bottom: 20px;
         }
 
         .display {
@@ -46,165 +40,198 @@
             margin-top: 20px;
             color: #333;
         }
+
+        .payment {
+            font-size: 18px;
+            margin-top: 10px;
+            color: green;
+            display: none; /* Hide by default */
+        }
+
+        .btn-custom {
+            padding: 10px 20px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 220px;
+        }
+
+        .warning {
+            color: red;
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
+<h1>PC Timer</h1>
+
 <div class="container">
-    <h1>PC TIMER</h1>
+    <div class="row">
+        <!-- Timer 1 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <div class="timer" id="timer1">
+                <h2>PC 1</h2>
+                <button class="btn btn-primary btn-custom mb-2" onclick="startTimer(0, 30)">30 Minutes</button>
+                <button class="btn btn-primary btn-custom mb-2" onclick="startTimer(0, 60)">1 Hour</button>
+                <button class="btn btn-secondary btn-custom mb-2" id="stopwatchBtn0" onclick="startStopwatch(0)">Start Stopwatch</button>
+                <button class="btn btn-danger btn-custom mb-2" onclick="resetTimer(0)">Reset</button>
+                <div class="display" id="display1">00:00</div>
+                <div class="payment" id="payment1">Amount to be paid: $0.00</div>
+                <div class="warning" id="warning1"></div>
+            </div>
+        </div>
 
-    <!-- Timer 1 -->
-    <div class="timer" id="timer1">
-        <h2>PC 1</h2>
-        <button onclick="startTimer(0, .05)">30 Minutes</button>
-        <button onclick="startTimer(0, 60)">1 Hour</button>
-        <button onclick="startStopwatch(0)">Open time</button>
-        <button onclick="resetTimer(0)">Reset</button>
-        <div class="display" id="display1">00:00</div>
-    </div>
+        <!-- Timer 2 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <div class="timer" id="timer2">
+                <h2>PC 2</h2>
+                <button class="btn btn-primary btn-custom mb-2" onclick="startTimer(1, 30)">30 Minutes</button>
+                <button class="btn btn-primary btn-custom mb-2" onclick="startTimer(1, 60)">1 Hour</button>
+                <button class="btn btn-secondary btn-custom mb-2" id="stopwatchBtn1" onclick="startStopwatch(1)">Start Stopwatch</button>
+                <button class="btn btn-danger btn-custom mb-2" onclick="resetTimer(1)">Reset</button>
+                <div class="display" id="display2">00:00</div>
+                <div class="payment" id="payment2">Amount to be paid: $0.00</div>
+                <div class="warning" id="warning2"></div>
+            </div>
+        </div>
 
-    <!-- Timer 2 -->
-    <div class="timer" id="timer2">
-        <h2>PC 2</h2>
-        <button onclick="startTimer(1, 30)">30 Minutes</button>
-        <button onclick="startTimer(1, 60)">1 Hour</button>
-        <button onclick="startStopwatch(1)">Open time</button>
-        <button onclick="resetTimer(1)">Reset</button>
-        <div class="display" id="display2">00:00</div>
-    </div>
+        <!-- Timer 3 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <div class="timer" id="timer3">
+                <h2>PC 3</h2>
+                <button class="btn btn-primary btn-custom mb-2" onclick="startTimer(2, 30)">30 Minutes</button>
+                <button class="btn btn-primary btn-custom mb-2" onclick="startTimer(2, 60)">1 Hour</button>
+                <button class="btn btn-secondary btn-custom mb-2" id="stopwatchBtn2" onclick="startStopwatch(2)">Start Stopwatch</button>
+                <button class="btn btn-danger btn-custom mb-2" onclick="resetTimer(2)">Reset</button>
+                <div class="display" id="display3">00:00</div>
+                <div class="payment" id="payment3">Amount to be paid: $0.00</div>
+                <div class="warning" id="warning3"></div>
+            </div>
+        </div>
 
-    <!-- Timer 3 -->
-    <div class="timer" id="timer3">
-        <h2>PC 3</h2>
-        <button onclick="startTimer(2, 30)">30 Minutes</button>
-        <button onclick="startTimer(2, 60)">1 Hour</button>
-        <button onclick="startStopwatch(2)">Open time</button>
-        <button onclick="resetTimer(2)">Reset</button>
-        <div class="display" id="display3">00:00</div>
-    </div>
-
-    <!-- Timer 4 -->
-    <div class="timer" id="timer4">
-        <h2>PC 4</h2>
-        <button onclick="startTimer(3, 30)">30 Minutes</button>
-        <button onclick="startTimer(3, 60)">1 Hour</button>
-        <button onclick="startStopwatch(3)">Open time</button>
-        <button onclick="resetTimer(3)">Reset</button>
-        <div class="display" id="display4">00:00</div>
+        <!-- Timer 4 -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <div class="timer" id="timer4">
+                <h2>PC 4</h2>
+                <button class="btn btn-primary btn-custom mb-2" onclick="startTimer(3, 30)">30 Minutes</button>
+                <button class="btn btn-primary btn-custom mb-2" onclick="startTimer(3, 60)">1 Hour</button>
+                <button class="btn btn-secondary btn-custom mb-2" id="stopwatchBtn3" onclick="startStopwatch(3)">Start Stopwatch</button>
+                <button class="btn btn-danger btn-custom mb-2" onclick="resetTimer(3)">Reset</button>
+                <div class="display" id="display4">00:00</div>
+                <div class="payment" id="payment4">Amount to be paid: $0.00</div>
+                <div class="warning" id="warning4"></div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     let timers = [
-        { id: "display1", countdown: null, time: 0, isRunning: false, stopwatch: false, label: "Timer 1" },
-        { id: "display2", countdown: null, time: 0, isRunning: false, stopwatch: false, label: "Timer 2" },
-        { id: "display3", countdown: null, time: 0, isRunning: false, stopwatch: false, label: "Timer 3" },
-        { id: "display4", countdown: null, time: 0, isRunning: false, stopwatch: false, label: "Timer 4" }
+        { id: "display1", countdownTimer: null, countdownTime: 0, isCountdownRunning: false, stopwatchTime: 0, stopwatchInterval: null, stopwatchRunning: false, paidAmount: 0, label: "Timer 1", interval: null, paymentId: "payment1" },
+        { id: "display2", countdownTimer: null, countdownTime: 0, isCountdownRunning: false, stopwatchTime: 0, stopwatchInterval: null, stopwatchRunning: false, paidAmount: 0, label: "Timer 2", interval: null, paymentId: "payment2" },
+        { id: "display3", countdownTimer: null, countdownTime: 0, isCountdownRunning: false, stopwatchTime: 0, stopwatchInterval: null, stopwatchRunning: false, paidAmount: 0, label: "Timer 3", interval: null, paymentId: "payment3" },
+        { id: "display4", countdownTimer: null, countdownTime: 0, isCountdownRunning: false, stopwatchTime: 0, stopwatchInterval: null, stopwatchRunning: false, paidAmount: 0, label: "Timer 4", interval: null, paymentId: "payment4" }
     ];
 
-    // Create the alarm sound using Audio
-    const alarmSound = new Audio("retro.mp3");
-    alarmSound.loop = true;  // Set the sound to loop indefinitely
+    const alarmSound = new Audio('retro.mp3');
 
+    // Start the timer
     function startTimer(timerIndex, minutes) {
-        let additionalTimeInSeconds = minutes * 60;
-
-        // If the timer is running, confirm if you want to add more time
-        if (timers[timerIndex].isRunning) {
-            // Ask user for confirmation to add more time
-            if (confirm(`Do you want to add ${minutes} time to this PC?`)) {
-                timers[timerIndex].time += additionalTimeInSeconds;
+        if (timers[timerIndex].isCountdownRunning) {
+            if (confirm(`Do you want to add ${minutes} minutes to this timer?`)) {
+                timers[timerIndex].countdownTime += minutes * 60;
                 updateDisplay(timerIndex);
             }
         } else {
-            // Start the timer normally if it's not running
-            timers[timerIndex].isRunning = true;
-            timers[timerIndex].time = additionalTimeInSeconds;
+            timers[timerIndex].isCountdownRunning = true;
+            timers[timerIndex].countdownTime = minutes * 60;
             startCountdown(timerIndex);
         }
     }
 
-    function startStopwatch(timerIndex) {
-        if (timers[timerIndex].stopwatch) return; // Prevent multiple stopwatches
-
-        let displayElement = document.getElementById(timers[timerIndex].id);
-        let time = 0;
-
-        timers[timerIndex].stopwatch = true;
-        timers[timerIndex].countdown = setInterval(() => {
-            time++;
-            displayElement.innerText = formatTime(time);
-        }, 1000);
-    }
-
-    function resetTimer(timerIndex) {
-        clearInterval(timers[timerIndex].countdown);
-        timers[timerIndex].isRunning = false;
-        timers[timerIndex].stopwatch = false;
-        timers[timerIndex].time = 0;
-        document.getElementById(timers[timerIndex].id).innerText = '00:00';
-
-        // Stop the alarm sound when the timer is reset
-        alarmSound.pause();
-        alarmSound.currentTime = 0;
-    }
-
+    // Start the countdown for the timer
     function startCountdown(timerIndex) {
         let displayElement = document.getElementById(timers[timerIndex].id);
-        displayElement.innerText = formatTime(timers[timerIndex].time);
-
-        timers[timerIndex].countdown = setInterval(() => {
-            timers[timerIndex].time--;
+        timers[timerIndex].countdownTimer = setInterval(() => {
+            timers[timerIndex].countdownTime -= 1;
             updateDisplay(timerIndex);
 
-            if (timers[timerIndex].time <= 0) {
-                clearInterval(timers[timerIndex].countdown);
-                timers[timerIndex].isRunning = false;
+            if (timers[timerIndex].countdownTime <= 0) {
+                clearInterval(timers[timerIndex].countdownTimer);
+                timers[timerIndex].isCountdownRunning = false;
                 displayElement.innerText = `${timers[timerIndex].label} Time's Up!`;
-
-                // Play the alarm sound in a loop
                 alarmSound.play();
-
-                // Directly show the time options prompt and keep the alarm going
-                handleSecondPrompt(timerIndex);
             }
         }, 1000);
     }
 
-    function handleSecondPrompt(timerIndex) {
-        // Keep the alarm sound playing while waiting for user input
-        let userChoice = prompt(`Choose time to add to ${timers[timerIndex].label}:\n1. 30 minutes\n2. 1 hour\n3. cancel to exit`);
-
-        if (userChoice === "1") {
-            timers[timerIndex].time += 30 * 60; // Add 30 minutes
-            startCountdown(timerIndex);
-            alarmSound.pause();  // Stop the alarm sound after action
-            alarmSound.currentTime = 0;  // Reset the sound
-        } else if (userChoice === "2") {
-            timers[timerIndex].time += 60 * 60; // Add 1 hour
-            startCountdown(timerIndex);
-            alarmSound.pause();  // Stop the alarm sound after action
-            alarmSound.currentTime = 0;  // Reset the sound
-            
-        } else {resetTimer(timerIndex);
-            alarmSound.pause();  // Stop the alarm sound after reset
-            alarmSound.currentTime = 0;  // Reset the soundalert("Invalid choice! Please choose '1', '2', or '3'.");
+    // Update the timer display and the payment amount based on stopwatch time
+    function updateDisplay(timerIndex) {
+        let displayElement = document.getElementById(timers[timerIndex].id);
+        if (timers[timerIndex].stopwatchRunning) {
+            displayElement.innerText = formatTime(timers[timerIndex].stopwatchTime);
+            updatePayment(timerIndex); // Update payment only when stopwatch is running
+        } else if (timers[timerIndex].isCountdownRunning) {
+            displayElement.innerText = formatTime(timers[timerIndex].countdownTime);
+        } else {
+            displayElement.innerText = "00:00";
         }
     }
 
-    function updateDisplay(timerIndex) {
-        let displayElement = document.getElementById(timers[timerIndex].id);
-        displayElement.innerText = formatTime(timers[timerIndex].time);
+    // Format time in mm:ss format
+    function formatTime(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${padZero(minutes)}:${padZero(seconds)}`;
     }
 
-    function formatTime(seconds) {
-        let minutes = Math.floor(seconds / 60);
-        let remainingSeconds = seconds % 60;
-        return `${padZero(minutes)}:${padZero(remainingSeconds)}`;
-    }
-
+    // Pad a single digit number with a leading zero
     function padZero(value) {
         return value < 10 ? "0" + value : value;
+    }
+
+    // Calculate the paid amount in real-time as the stopwatch runs
+    function updatePayment(timerIndex) {
+        const secondsPassed = timers[timerIndex].stopwatchTime;
+        const paymentPerSecond = 0.00278; // 1 peso per 6 minutes (360 seconds)
+        timers[timerIndex].paidAmount = (secondsPassed * paymentPerSecond).toFixed(2);
+        document.getElementById(timers[timerIndex].paymentId).innerText = `Amount to be paid: $${timers[timerIndex].paidAmount}`;
+    }
+
+    // Reset the timer
+    function resetTimer(timerIndex) {
+        clearInterval(timers[timerIndex].countdownTimer);
+        clearInterval(timers[timerIndex].stopwatchInterval);
+        timers[timerIndex].isCountdownRunning = false;
+        timers[timerIndex].countdownTime = 0;
+        timers[timerIndex].stopwatchTime = 0;
+        timers[timerIndex].stopwatchRunning = false;
+        timers[timerIndex].paidAmount = 0;  // Reset the paid amount
+        updateDisplay(timerIndex);  // Update the display to show the reset state
+        // Hide the payment amount when the timer is reset
+        document.getElementById(timers[timerIndex].paymentId).style.display = 'none';
+    }
+
+    // Start or stop the stopwatch
+    function startStopwatch(timerIndex) {
+        if (timers[timerIndex].stopwatchRunning) {
+            clearInterval(timers[timerIndex].stopwatchInterval);
+            timers[timerIndex].stopwatchRunning = false;
+            document.getElementById(`stopwatchBtn${timerIndex}`).innerText = "Start Stopwatch";
+            // Hide the payment amount when stopwatch stops
+            document.getElementById(timers[timerIndex].paymentId).style.display = 'block';
+        } else {
+            timers[timerIndex].stopwatchRunning = true;
+            timers[timerIndex].stopwatchInterval = setInterval(() => {
+                timers[timerIndex].stopwatchTime += 1;
+                updateDisplay(timerIndex);
+            }, 1000);
+            document.getElementById(`stopwatchBtn${timerIndex}`).innerText = "Stop Stopwatch";
+            // Show the payment amount when stopwatch starts
+            document.getElementById(timers[timerIndex].paymentId).style.display = 'block';
+        }
     }
 </script>
 
