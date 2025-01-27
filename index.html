@@ -112,7 +112,7 @@
         // If the timer is running, confirm if you want to add more time
         if (timers[timerIndex].isRunning) {
             // Ask user for confirmation to add more time
-            if (confirm(`Do you want to add ${minutes} minutes to this timer?`)) {
+            if (confirm(`Do you want to add ${minutes} time to this PC?`)) {
                 timers[timerIndex].time += additionalTimeInSeconds;
                 updateDisplay(timerIndex);
             }
@@ -185,12 +185,10 @@
             startCountdown(timerIndex);
             alarmSound.pause();  // Stop the alarm sound after action
             alarmSound.currentTime = 0;  // Reset the sound
-        } else if (userChoice === "3") {
-            resetTimer(timerIndex);
+            
+        } else {resetTimer(timerIndex);
             alarmSound.pause();  // Stop the alarm sound after reset
-            alarmSound.currentTime = 0;  // Reset the sound
-        } else {
-            alert("Invalid choice! Please choose '1', '2', or '3'.");
+            alarmSound.currentTime = 0;  // Reset the soundalert("Invalid choice! Please choose '1', '2', or '3'.");
         }
     }
 
