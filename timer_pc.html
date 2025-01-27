@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Timer App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .timer {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5c6bc0;
+            color: white;
+        }
+
+        .display {
+            font-size: 40px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>PC TIMER</h1>
+
+    <!-- Timer 1 -->
+    <div class="timer" id="timer1">
+        <h2>PC 1</h2>
+        <button onclick="startTimer(0, 0.05)">30 Minutes</button>
+        <button onclick="startTimer(0, 60)">1 Hour</button>
+        <button onclick="startStopwatch(0)">Open time</button>
+        <button onclick="resetTimer(0)">Reset</button>
+        <div class="display" id="display1">00:00</div>
+    </div>
+
+    <!-- Timer 2 -->
+    <div class="timer" id="timer2">
+        <h2>PC 2</h2>
+        <button onclick="startTimer(1, 30)">30 Minutes</button>
+        <button onclick="startTimer(1, 60)">1 Hour</button>
+        <button onclick="startStopwatch(1)">Open time</button>
+        <button onclick="resetTimer(1)">Reset</button>
+        <div class="display" id="display2">00:00</div>
+    </div>
+
+    <!-- Timer 3 -->
+    <div class="timer" id="timer3">
+        <h2>PC 3</h2>
+        <button onclick="startTimer(2, 30)">30 Minutes</button>
+        <button onclick="startTimer(2, 60)">1 Hour</button>
+        <button onclick="startStopwatch(2)">Open time</button>
+        <button onclick="resetTimer(2)">Reset</button>
+        <div class="display" id="display3">00:00</div>
+    </div>
+
+    <!-- Timer 4 -->
+    <div class="timer" id="timer4">
+        <h2>PC 4</h2>
+        <button onclick="startTimer(3, 30)">30 Minutes</button>
+        <button onclick="startTimer(3, 60)">1 Hour</button>
+        <button onclick="startStopwatch(3)">Open time</button>
+        <button onclick="resetTimer(3)">Reset</button>
+        <div class="display" id="display4">00:00</div>
+    </div>
+</div>
+
+<script>
+    let timers = [
+        { id: "display1", countdown: null, time: 0, isRunning: false, stopwatch: false, label: "Timer 1" },
+        { id: "display2", countdown: null, time: 0, isRunning: false, stopwatch: false, label: "Timer 2" },
+        { id: "display3", countdown: null, time: 0, isRunning: false, stopwatch: false, label: "Timer 3" },
+        { id: "display4", countdown: null, time: 0, isRunning: false, stopwatch: false, label: "Timer 4" }
+    ];
+
+    // Create the alarm sound using Audio
+    const alarmSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+
+    function startTimer(timerIndex, minutes) {
+        let additionalTimeInSeconds = minutes * 60;
+
+        // If the timer is running, confirm if you want to add time
+        if (timers[timerIndex].isRunning) {
+            // Ask user for confirmation to add more time
+            if (confirm(`Do you want to add ${minutes} minutes to this timer?`)) {
+                timers[timerIndex].time += additionalTimeInSeconds;
+                updateDisplay(timerIndex);
+            }
+        } else {
+            // Start the timer normally if it's not running
+            timers[timerIndex].isRunning = true;
+            timers[timerIndex].time = additionalTimeInSeconds;
+            startCountdown(timerIndex);
+        }
+    }
+
+    function startStopwatch(timerIndex) {
+        if (timers[timerIndex].stopwatch) return; // Prevent multiple stopwatches
+
+        let displayElement = document.getElementById(timers[timerIndex].id);
+        let time = 0;
+
+        timers[timerIndex].stopwatch = true;
+        timers[timerIndex].countdown = setInterval(() => {
+            time++;
+            displayElement.innerText = formatTime(time);
+        }, 1000);
+    }
+
+    function resetTimer(timerIndex) {
+        clearInterval(timers[timerIndex].countdown);
+        timers[timerIndex].isRunning = false;
+        timers[timerIndex].stopwatch = false;
+        timers[timerIndex].time = 0;
+        document.getElementById(timers[timerIndex].id).innerText = '00:00';
+    }
+
+    function startCountdown(timerIndex) {
+        let displayElement = document.getElementById(timers[timerIndex].id);
+        displayElement.innerText = formatTime(timers[timerIndex].time);
+
+        timers[timerIndex].countdown = setInterval(() => {
+            timers[timerIndex].time--;
+            updateDisplay(timerIndex);
+
+            
+
+            if (timers[timerIndex].time <= 0) {
+                clearInterval(timers[timerIndex].countdown);
+                timers[timerIndex].isRunning = false;
+                displayElement.innerText = `${timers[timerIndex].label} Time's Up!`;
+
+                // Play the alarm sound
+                alarmSound.play();
+
+                // Directly show the time options prompt
+                handleSecondPrompt(timerIndex);
+            }
+        }, 1000);
+    }
+
+    function handleSecondPrompt(timerIndex) {
+        let userChoice = prompt(`Choose time to add to ${timers[timerIndex].label}:\n1. 30 minutes\n2. 1 hour\n3. Exit (reset timer)`);
+
+        if (userChoice === "1") {
+            timers[timerIndex].time += 30 * 60; // Add 30 minutes
+            startCountdown(timerIndex);
+        } else if (userChoice === "2") {
+            timers[timerIndex].time += 60 * 60; // Add 1 hour
+            startCountdown(timerIndex);
+        } else if (userChoice === "3") {
+            resetTimer(timerIndex);
+        } else {
+            alert("Invalid choice! Please choose '1', '2', or '3'.");
+        }
+    }
+
+    function updateDisplay(timerIndex) {
+        let displayElement = document.getElementById(timers[timerIndex].id);
+        displayElement.innerText = formatTime(timers[timerIndex].time);
+    }
+
+    function formatTime(seconds) {
+        let minutes = Math.floor(seconds / 60);
+        let remainingSeconds = seconds % 60;
+        return `${padZero(minutes)}:${padZero(remainingSeconds)}`;
+    }
+
+    function padZero(value) {
+        return value < 10 ? "0" + value : value;
+    }
+</script>
+
+</body>
+</html>
