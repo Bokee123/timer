@@ -104,14 +104,15 @@
 
     // Create the alarm sound using Audio
     const alarmSound = new Audio("button-4.wav");
+    alarmSound.loop = true;  // Set the sound to loop indefinitely
 
     function startTimer(timerIndex, minutes) {
         let additionalTimeInSeconds = minutes * 60;
 
-        // If the timer is running, confirm if you want to add time
+        // If the timer is running, confirm if you want to add more time
         if (timers[timerIndex].isRunning) {
             // Ask user for confirmation to add more time
-            if (confirm(Do you want to add ${minutes} minutes to this timer?)) {
+            if (confirm(`Do you want to add ${minutes} minutes to this timer?`)) {
                 timers[timerIndex].time += additionalTimeInSeconds;
                 updateDisplay(timerIndex);
             }
@@ -142,6 +143,10 @@
         timers[timerIndex].stopwatch = false;
         timers[timerIndex].time = 0;
         document.getElementById(timers[timerIndex].id).innerText = '00:00';
+
+        // Stop the alarm sound when the timer is reset
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
     }
 
     function startCountdown(timerIndex) {
@@ -152,14 +157,12 @@
             timers[timerIndex].time--;
             updateDisplay(timerIndex);
 
-            
-
             if (timers[timerIndex].time <= 0) {
                 clearInterval(timers[timerIndex].countdown);
                 timers[timerIndex].isRunning = false;
-                displayElement.innerText = ${timers[timerIndex].label} Time's Up!;
+                displayElement.innerText = `${timers[timerIndex].label} Time's Up!`;
 
-                // Play the alarm sound
+                // Play the alarm sound in a loop
                 alarmSound.play();
 
                 // Directly show the time options prompt
@@ -169,7 +172,11 @@
     }
 
     function handleSecondPrompt(timerIndex) {
-        let userChoice = prompt(Choose time to add to ${timers[timerIndex].label}:\n1. 30 minutes\n2. 1 hour\n3. Exit (reset timer));
+        // Stop the alarm sound from looping when the prompt appears
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
+
+        let userChoice = prompt(`Choose time to add to ${timers[timerIndex].label}:\n1. 30 minutes\n2. 1 hour\n3. Exit (reset timer)`);
 
         if (userChoice === "1") {
             timers[timerIndex].time += 30 * 60; // Add 30 minutes
@@ -192,7 +199,7 @@
     function formatTime(seconds) {
         let minutes = Math.floor(seconds / 60);
         let remainingSeconds = seconds % 60;
-        return ${padZero(minutes)}:${padZero(remainingSeconds)};
+        return `${padZero(minutes)}:${padZero(remainingSeconds)}`;
     }
 
     function padZero(value) {
